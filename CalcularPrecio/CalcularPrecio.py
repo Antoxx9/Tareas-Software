@@ -62,8 +62,6 @@ def calcularPrecio(tarifa,tiempoDeTrabajo):
             dias_restantes = math.ceil(horas_restantes/24)
             
         while(dias_restantes > 0):
-            #print("Quedan " + str(dias_restantes) + " dias")
-            #print("Quedan " + str(horas_restantes) + " horas")
             if(dias_restantes == 1):
                 if(dia_actual == 5 or dia_actual == 6):
                     total_pago += decimal.Decimal(horas_restantes*tarifa.weekend)
