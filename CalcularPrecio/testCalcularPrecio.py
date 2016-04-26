@@ -36,7 +36,14 @@ class Test(unittest.TestCase):
         tarifa_actual = tarifa(1.5,5.4)
         tiempo_trabajo = [entrada,salida]
         self.assertEquals(calcularPrecio(tarifa_actual, tiempo_trabajo),439.2)
-
+        
+    def test_trabajar_menos_de_una_hora_y_cambiar_tarifa(self):
+        entrada = datetime.datetime(2016,4,29,23,50,0)
+        salida = datetime.datetime(2016,4,30,0,15,0)
+        tarifa_actual = tarifa(1.5,5.4)
+        tiempo_trabajo = [entrada,salida]
+        self.assertEquals(calcularPrecio(tarifa_actual, tiempo_trabajo),6.9)
+        
     def test_estar_mas_de_siete_dias(self):
         entrada = datetime.datetime(2016,4,22,15,54,0)
         salida = datetime.datetime(2016,4,30,15,54,0)
