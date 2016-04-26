@@ -36,7 +36,8 @@ def calcularPrecio(tarifa,tiempoDeTrabajo):
     elif(dias_trabajo > 7):
         print("El tiempo de trabajo fue mayor a 7 dias")
         return -1
-    elif(dia_inicio != dia_fin and horas_trabajo == 1):
+    elif(((dia_inicio == 4 and dia_fin == 5) or
+          (dia_inicio == 6 and dia_fin == 0)) and horas_trabajo == 1):
         if(dia_inicio == 5 or dia_inicio == 6):
             total_pago += tarifa.weekend
         else:
