@@ -4,20 +4,25 @@ Created on 27/4/2016
 Autores: Anthony El Kareh, Eliot Diaz
 '''
 
-import datetime
 import decimal
-import sys
 import math
-
-decimal.getcontext().prec = 6
+import datetime
+import sys
 
 class tarifa():
     
     def __init__(self,nm,wk):
-        self.normal = decimal.Decimal(nm)
-        self.weekend = decimal.Decimal(wk)
+        if((type(nm) is int or type(nm) is float)
+            and (type(wk) is int or type(wk) is float)):
+            self.normal = decimal.Decimal(nm)
+            self.weekend = decimal.Decimal(wk)
+        else:
+            self.normal = -1
+            self.weekend = -1
 
 def calcularPrecio(tarifa,tiempoDeTrabajo):
+    if(tarifa.weekend < 0 or tarifa.normal < 0):
+        return -1
     total_pago = 0
     entrada = tiempoDeTrabajo[0]
     salida = tiempoDeTrabajo[1]
@@ -25,13 +30,13 @@ def calcularPrecio(tarifa,tiempoDeTrabajo):
     dias_trabajo = tiempo_total.days
     horas_trabajo = tiempo_total.days*24 + tiempo_total.seconds//3600
     segundos_trabajo = tiempo_total.seconds
-    print(tiempo_total)
-    print(segundos_trabajo)
     dia_inicio = entrada.weekday()
     dia_fin = salida.weekday()
     if(segundos_trabajo % 3600 > 0):
         horas_trabajo += 1
-    
+    if(dia_inicio == 4 and dia_fin == 0):
+        horas_trabajo += 1
+        
     if(dias_trabajo == 0 and segundos_trabajo < 900):
         print("El tiempo de trabajo fue menor a 15 minutos.")
         return -1
@@ -90,6 +95,4 @@ def calcularPrecio(tarifa,tiempoDeTrabajo):
                     dia_actual += 1
                                 
                 dias_restantes -= 1
-                
-    print("El total a pagar es de: " + str(total_pago))
-    return float(total_pago)
+    return total_pago
