@@ -82,28 +82,32 @@ class CalcularPrecioTester(unittest.TestCase):
         salida = datetime.datetime(2016,6,15,15,0,0)
         tiempoDeTrabajo = [entrada, salida]
         tarifaActual = tarifa(2.56,5)
-        self.assertEquals(calcularPrecio(tarifaActual, tiempoDeTrabajo), 5.12)
+        self.assertEquals(calcularPrecio(tarifaActual, tiempoDeTrabajo), 
+                          decimal.Decimal(2)*decimal.Decimal(2.56))
 
     def testTrabajoConTarifaDecimalEnDiaDeFinDeSemana(self):
         entrada = datetime.datetime(2016,6,18,13,0,0)
         salida = datetime.datetime(2016,6,18,15,0,0)
         tiempoDeTrabajo = [entrada, salida]
         tarifaActual = tarifa(5,3.78)
-        self.assertEquals(calcularPrecio(tarifaActual, tiempoDeTrabajo), 7.56)
+        self.assertEquals(calcularPrecio(tarifaActual, tiempoDeTrabajo), 
+                          decimal.Decimal(2)*decimal.Decimal(3.78))
         
     def testTrabajoConAmbasTarifaDecimal(self):
         entrada = datetime.datetime(2016,6,15,13,0,0)
         salida = datetime.datetime(2016,6,15,15,0,0)
         tiempoDeTrabajo = [entrada, salida]
         tarifaActual = tarifa(2.56,3.56)
-        self.assertEquals(calcularPrecio(tarifaActual, tiempoDeTrabajo), 2*2.56)
+        self.assertEquals(calcularPrecio(tarifaActual, tiempoDeTrabajo), 
+                          decimal.Decimal(2)*decimal.Decimal(2.56))
         
     def testTrabajoConAmbasTarifaDecimalPrecisionCompleja(self):
         entrada = datetime.datetime(2016,6,15,13,0,0)
         salida = datetime.datetime(2016,6,15,15,0,0)
         tiempoDeTrabajo = [entrada, salida]
         tarifaActual = tarifa(2.123456789,3.987654321)
-        self.assertEquals(calcularPrecio(tarifaActual, tiempoDeTrabajo), 2*2.123456789)
+        self.assertEquals(calcularPrecio(tarifaActual, tiempoDeTrabajo), 
+                          decimal.Decimal(2)*decimal.Decimal(2.123456789))
         
     def testTrabajoEntreDiasDeSemana(self):
         entrada = datetime.datetime(2016,8,6,20,0,0)
