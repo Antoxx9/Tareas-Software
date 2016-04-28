@@ -21,13 +21,6 @@ class CalcularPrecioTester(unittest.TestCase):
         tarifaActual = tarifa(10,20)
         self.assertEquals(calcularPrecio(tarifaActual, tiempoDeTrabajo), 1470)
 
-    def testTrabajo29DeFebreroEnAnioNoBisiesto(self):
-        entrada = datetime.datetime(2015,2,29,12,0,0)
-        salida = datetime.datetime(2015,2,29,14,0,0)
-        tiempoDeTrabajo = [entrada, salida]
-        tarifaActual = tarifa(10,20)
-        self.assertEquals(calcularPrecio(tarifaActual, tiempoDeTrabajo), -1)
-
     def testTrabajoTiempoMinimo(self):
         entrada = datetime.datetime(2015,10,23,9,45,0)
         salida = datetime.datetime(2015,10,23,10,0,0)
@@ -97,6 +90,41 @@ class CalcularPrecioTester(unittest.TestCase):
         tiempoDeTrabajo = [entrada, salida]
         tarifaActual = tarifa(5,3.78)
         self.assertEquals(calcularPrecio(tarifaActual, tiempoDeTrabajo), 7.56)
+        
+    def testTrabajoConAmbasTarifaDecimal(self):
+        entrada = datetime.datetime(2016,6,15,13,0,0)
+        salida = datetime.datetime(2016,6,15,15,0,0)
+        tiempoDeTrabajo = [entrada, salida]
+        tarifaActual = tarifa(2.56,3.56)
+        self.assertEquals(calcularPrecio(tarifaActual, tiempoDeTrabajo), 2*2.56)
+        
+    def testTrabajoConAmbasTarifaDecimalPrecisionCompleja(self):
+        entrada = datetime.datetime(2016,6,15,13,0,0)
+        salida = datetime.datetime(2016,6,15,15,0,0)
+        tiempoDeTrabajo = [entrada, salida]
+        tarifaActual = tarifa(2.123456789,3.987654321)
+        self.assertEquals(calcularPrecio(tarifaActual, tiempoDeTrabajo), 2*2.123456789)
+        
+    def testTrabajoEntreDiasDeSemana(self):
+        entrada = datetime.datetime(2016,8,6,20,0,0)
+        salida = datetime.datetime(2016,8,7,4,0,0)
+        tiempoDeTrabajo = [entrada, salida]
+        tarifaActual = tarifa(3,4)
+        self.assertEquals(calcularPrecio(tarifaActual, tiempoDeTrabajo), 8*4)
+        
+    def testTrabajoEntreMeses(self):
+        entrada = datetime.datetime(2016,10,31,15,0,0)
+        salida = datetime.datetime(2016,11,2,15,0,0)
+        tiempoDeTrabajo = [entrada, salida]
+        tarifaActual = tarifa(3,4)
+        self.assertEquals(calcularPrecio(tarifaActual, tiempoDeTrabajo), 48*3)
+        
+    def testTrabajoEntreAnios(self):
+        entrada = datetime.datetime(2016,12,31,9,0,0)
+        salida = datetime.datetime(2017,1,1,9,0,0)
+        tiempoDeTrabajo = [entrada, salida]
+        tarifaActual = tarifa(3,4)
+        self.assertEquals(calcularPrecio(tarifaActual, tiempoDeTrabajo), 24*4)
             
 if __name__ == '__main__':
     unittest.main()
