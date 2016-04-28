@@ -23,76 +23,76 @@ class tarifa():
 def calcularPrecio(tarifa,tiempoDeTrabajo):
     if(tarifa.weekend < 0 or tarifa.normal < 0):
         return -1
-    total_pago = 0
+    totalPago = 0
     entrada = tiempoDeTrabajo[0]
     salida = tiempoDeTrabajo[1]
-    tiempo_total = salida - entrada
-    dias_trabajo = tiempo_total.days
-    horas_trabajo = tiempo_total.days*24 + tiempo_total.seconds//3600
-    segundos_trabajo = tiempo_total.seconds
-    dia_inicio = entrada.weekday()
-    dia_fin = salida.weekday()
-    if(segundos_trabajo % 3600 > 0):
-        horas_trabajo += 1
-    if(dia_inicio == 4 and dia_fin == 0):
-        horas_trabajo += 1
+    tiempoTotal = salida - entrada
+    diasTrabajo = tiempoTotal.days
+    horasTrabajo = tiempoTotal.days*24 + tiempoTotal.seconds//3600
+    segundosTrabajo = tiempoTotal.seconds
+    diaInicio = entrada.weekday()
+    diaFin = salida.weekday()
+    if(segundosTrabajo % 3600 > 0):
+        horasTrabajo += 1
+    if(diaInicio == 4 and diaFin == 0):
+        horasTrabajo += 1
         
-    if(dias_trabajo == 0 and segundos_trabajo < 900):
+    if(diasTrabajo == 0 and segundosTrabajo < 900):
         print("El tiempo de trabajo fue menor a 15 minutos.")
         return -1
-    elif(dias_trabajo > 7):
+    elif(diasTrabajo > 7):
         print("El tiempo de trabajo fue mayor a 7 dias")
         return -1
-    elif(((dia_inicio == 4 and dia_fin == 5) or
-          (dia_inicio == 6 and dia_fin == 0)) and horas_trabajo == 1):
-        if(dia_inicio == 5 or dia_inicio == 6):
-            total_pago += tarifa.weekend
+    elif(((diaInicio == 4 and diaFin == 5) or
+          (diaInicio == 6 and diaFin == 0)) and horasTrabajo == 1):
+        if(diaInicio == 5 or diaInicio == 6):
+            totalPago += tarifa.weekend
         else:
-            total_pago += tarifa.normal
-        if(dia_fin == 5 or dia_fin == 6):
-            total_pago += tarifa.weekend
+            totalPago += tarifa.normal
+        if(diaFin == 5 or diaFin == 6):
+            totalPago += tarifa.weekend
         else:
-            total_pago += tarifa.normal
+            totalPago += tarifa.normal
     else:
         if(entrada.day == salida.day):
-            if(dia_inicio == 5 or dia_inicio == 6):
-                total_pago += decimal.Decimal(horas_trabajo*tarifa.weekend)
+            if(diaInicio == 5 or diaInicio == 6):
+                totalPago += decimal.Decimal(horasTrabajo*tarifa.weekend)
             else:
-                total_pago += decimal.Decimal(horas_trabajo*tarifa.normal)
+                totalPago += decimal.Decimal(horasTrabajo*tarifa.normal)
         else:
-            if(dia_inicio == 5 or dia_inicio == 6):
-                total_pago += decimal.Decimal((24-entrada.hour)*tarifa.weekend)
+            if(diaInicio == 5 or diaInicio == 6):
+                totalPago += decimal.Decimal((24-entrada.hour)*tarifa.weekend)
             else:
-                total_pago += decimal.Decimal((24-entrada.hour)*tarifa.normal)
-            horas_restantes = horas_trabajo
-            horas_restantes -= (24-entrada.hour)
+                totalPago += decimal.Decimal((24-entrada.hour)*tarifa.normal)
+            horasRestantes = horasTrabajo
+            horasRestantes -= (24-entrada.hour)
     
-            if(dia_inicio == 6):
-                dia_actual = 0
+            if(diaInicio == 6):
+                diaActual = 0
             else:
-                dia_actual = dia_inicio + 1
-            if(horas_restantes < 24 and horas_restantes > 0):
-                dias_restantes = 1
+                diaActual = diaInicio + 1
+            if(horasRestantes < 24 and horasRestantes > 0):
+                diasRestantes = 1
             else:
-                dias_restantes = math.ceil(horas_restantes/24)
+                diasRestantes = math.ceil(horasRestantes/24)
                 
-            while(dias_restantes > 0):
-                if(dias_restantes == 1):
-                    if(dia_actual == 5 or dia_actual == 6):
-                        total_pago += decimal.Decimal(horas_restantes*tarifa.weekend)
+            while(diasRestantes > 0):
+                if(diasRestantes == 1):
+                    if(diaActual == 5 or diaActual == 6):
+                        totalPago += decimal.Decimal(horasRestantes*tarifa.weekend)
                     else:
-                        total_pago += decimal.Decimal(horas_restantes*tarifa.normal)
+                        totalPago += decimal.Decimal(horasRestantes*tarifa.normal)
                 else:
-                    horas_restantes -= 24
-                    if(dia_actual == 5 or dia_actual == 6):
-                        total_pago += decimal.Decimal(24*tarifa.weekend)
+                    horasRestantes -= 24
+                    if(diaActual == 5 or diaActual == 6):
+                        totalPago += decimal.Decimal(24*tarifa.weekend)
                     else:
-                        total_pago += decimal.Decimal(24*tarifa.normal)
+                        totalPago += decimal.Decimal(24*tarifa.normal)
                         
-                if(dia_actual == 6):
-                    dia_actual = 0
+                if(diaActual == 6):
+                    diaActual = 0
                 else:
-                    dia_actual += 1
+                    diaActual += 1
                                 
-                dias_restantes -= 1
-    return total_pago
+                diasRestantes -= 1
+    return totalPago
