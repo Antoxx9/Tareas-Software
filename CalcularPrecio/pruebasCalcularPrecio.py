@@ -174,5 +174,6 @@ class CalcularPrecioTester(unittest.TestCase):
         tiempoDeTrabajo = [entrada, salida]
         tarifaActual = tarifa(2,"a")
         self.assertEquals(calcularPrecio(tarifaActual, tiempoDeTrabajo), -1)
+        
 if __name__ == '__main__':
     unittest.main()
