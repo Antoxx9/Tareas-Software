@@ -11,7 +11,7 @@ class recarga():
         self.fecha = datetime.datetime(anio,mes,dia,0,0,0)
         self.idEst = idEst
         
-class debito():
+class consumo():
     
     def __init__(self,monto,anio,mes,dia,idRes):
         self.monto = monto
@@ -28,7 +28,7 @@ class billeteraElectronica():
         self.ci = ci
         self.pin = pin
         self.recargas = []
-        self.debitos = []
+        self.consumos = []
         self.saldo = 0
         
     def getSaldo(self):
@@ -43,9 +43,9 @@ class billeteraElectronica():
             return -1
         
     def consumir(self,debito):
-        if(debito.monto > 0):
-            self.debitos.append(recarga)
-            self.saldo -= debito.monto
+        if(consumo.monto > 0):
+            self.consumos.append(recarga)
+            self.saldo -= consumo.monto
             return 0
         else:
             return -1
