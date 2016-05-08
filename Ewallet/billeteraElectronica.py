@@ -39,13 +39,13 @@ class billeteraElectronica():
             self.recargas.append(recarga)
             self.saldo += recarga.monto
             return 0
-        else
+        else:
             return -1
         
     def consumir(self,debito):
-        if(debito.monto > 0);
+        if(debito.monto > 0):
             self.debitos.append(recarga)
             self.saldo -= debito.monto
             return 0
-        else
+        else:
             return -1
