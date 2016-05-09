@@ -1,7 +1,7 @@
 '''
 Created on 09/5/2016
 
-Autores:    Anthony El Kareh, carnet 12-11075
+Autores:    Anthony El Kareh,     carnet 12-11075
             Guillermo Betancourt, carnet 11-10103
 '''
 import unittest
@@ -67,7 +67,8 @@ class billeteraElectronicaTester(unittest.TestCase):
         consumoEfectivo = []
         for i in range(4):
             miBilletera.recargar(misRecargas[i])
-            self.assertEquals(miBilletera.getSaldo(), saldo + misRecargas[i].monto)
+            saldo += misRecargas[i].monto
+            self.assertEquals(miBilletera.getSaldo(), saldo)
         for i in range(4):
             consumoEfectivo.append(miBilletera.consumir(misConsumos[i]))
             if consumoEfectivo[i] == 0:
@@ -82,5 +83,40 @@ class billeteraElectronicaTester(unittest.TestCase):
         miConsumo = consumo(-300,2016,2,24,1221,1111)
         self.assertEquals(miBilletera.recargar(miRecarga), -1)
         self.assertEquals(miBilletera.consumir(miConsumo), -1)
-        
+        self.assertEquals(miBilletera.getSaldo(), 0)
     
+    def testNombreApellidoCaracteresEspeciales(self):
+        miBilletera = billeteraElectronica(12345, "Bárbara", "Ñato", 98765, 5555)
+        self.assertEquals(miBilletera.nombres,"Bárbara")
+        self.assertEquals(miBilletera.apellidos,"Ñato")
+    
+    def testRecargasDecimales(self):
+        miBilletera = billeteraElectronica(12345, "Guillermo", "Betancourt", 98765, 5555)
+        miRecarga = recarga(0.00001,2016,2,23,1001)
+        miBilletera.recargar(miRecarga)
+        self.assertEquals(miBilletera.getSaldo(), 0.00001)
+    
+    def testRecargasConsumosDecimales(self):
+        miBilletera = billeteraElectronica(12345, "Guillermo", "Betancourt", 98765, 5555)
+        miRecarga = recarga(0.00001,2016,2,23,1001)
+        miConsumo = consumo(0.000001,2016,2,24,4554,5555)
+        miBilletera.recargar(miRecarga)
+        miBilletera.consumir(miConsumo)
+        self.assertEquals(miBilletera.getSaldo(), 0.000009)
+    
+    def testRecargaMaxInt(self):
+        miBilletera = billeteraElectronica(12345, "Guillermo", "Betancourt", 98765, 5555)
+        miRecarga = recarga(2147483647,2016,2,23,1001)
+        miBilletera.recargar(miRecarga)
+        self.assertEquals(miBilletera.getSaldo(), 2147483647)
+        
+    def testRecargaConsumoTotal(self):
+        miBilletera = billeteraElectronica(12345, "Guillermo", "Betancourt", 98765, 5555)
+        miRecarga = recarga(500,2016,2,23,1001)
+        miConsumo = consumo(500,2016,2,24,4554,5555)
+        self.assertEquals(miRecarga.monto, 500)
+        self.assertEquals(miConsumo, 500)
+        miBilletera.recargar(miRecarga)
+        self.assertEquals(miBilletera.getSaldo(), 500)
+        miBilletera.consumir(miConsumo)
+        self.assertEquals(miBilletera.getSaldo(), 0)
